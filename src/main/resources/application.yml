@@ -1,0 +1,25 @@
+server:
+  port: 8080
+
+postgres:
+  host: localhost:5432
+  database: wallet
+  username: wallet
+  password: wallet
+
+spring:
+  datasource:
+    url: jdbc:postgresql://${postgres.host}/${postgres.database}
+    username: ${postgres.username}
+    password: ${postgres.password}
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+  liquibase:
+    #enabled: true
+    change-log: db/changelog/main-changelog.xml
