@@ -17,7 +17,16 @@ import org.springframework.stereotype.Service;
 public class WalletServiceImpl implements WalletService {
 
     private final WalletRepository walletRepository;
+    private final AccountMapper accountMapper;
 
+    /**
+     * Обновляет информацию о состоянии счёта по заданному идентификатору.
+     *
+     * @param accountDtoIn объект AccountDtoIn с обновленными данными счёта
+     * @return объект AccountDtoOut с информацией о состоянии счёта после операции
+     * @throws @throws NotFoundException если категория не найдена
+     * @throws UncorrectedParametersException если сумма средств на счету становится отрицательной после списания
+     */
     @Override
     public AccountDtoOut save(AccountDtoIn accountDtoIn) {
         Account account = walletRepository.findById(accountDtoIn.getWalletId()).orElseThrow(
@@ -30,13 +39,20 @@ public class WalletServiceImpl implements WalletService {
         } else {
             account.setAmount(account.getAmount() - accountDtoIn.getAmount());
         }
-        return AccountMapper.toAccountDtoOut(walletRepository.save(account));
+        return accountMapper.toAccountDtoOut(walletRepository.save(account));
     }
 
+    /**
+     * Возвращает состояние счёта по заданному идентификатору.
+     *
+     * @param id идентификатор счёта
+     * @return объект AccountDtoOut
+     * @throws NotFoundException если категория не найдена
+     */
     @Override
     public AccountDtoOut getById(Long id) {
         Account account = walletRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Account by " + id + " not found"));
-        return AccountMapper.toAccountDtoOut(account);
+        return accountMapper.toAccountDtoOut(account);
     }
 }

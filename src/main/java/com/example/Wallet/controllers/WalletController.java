@@ -10,6 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Контроллер для администрирования счёта кошелька.
+ */
 @RestController
 @Validated
 @Slf4j
@@ -19,13 +22,25 @@ public class WalletController {
 
     private final WalletService walletService;
 
-    @ResponseStatus(HttpStatus.CREATED)
+    /**
+     * Обрабатывает POST запрос на изменение состояния счёта.
+     *
+     * @param accountDtoIn - объект данных с информацией об изменении счёта
+     * @return объект AccountDtoOut с информацией о состоянии счёта после операции
+     */
+    @ResponseStatus(HttpStatus.OK)
     @PostMapping("/wallet")
     public AccountDtoOut save(@Valid @RequestBody AccountDtoIn accountDtoIn) {
         log.info("POST account");
         return walletService.save(accountDtoIn);
     }
 
+    /**
+     * Обрабатывает GET запрос на получение информации о конкретном счёте.
+     *
+     * @param id - идентификатор счёта
+     * @return объект AccountDtoOut с информацией о текущем состоянии счёта
+     */
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/wallets/{id}")
     public AccountDtoOut getById(@PathVariable Long id) {

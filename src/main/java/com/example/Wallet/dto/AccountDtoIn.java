@@ -2,12 +2,15 @@ package com.example.Wallet.dto;
 
 import com.example.Wallet.model.OperationType;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import jakarta.validation.constraints.Positive;
 
 @Getter
 @Setter
+@AllArgsConstructor
+
 public class AccountDtoIn {
 
     @NotNull(message = "ID cannot be null")
